@@ -1,14 +1,15 @@
 import React from 'react';
 import ContactItem from '../ContactItem/ContactItem';
 
-function ContactList({ contacts, onDeleteContact }) {
+function ContactList({ contacts, onDeleteContact, onEditContact }) {
   return (
     <div>
       {contacts.map(contact => (
         <ContactItem
           key={contact.id}
           contact={contact}
-          onDeleteContact={onDeleteContact}
+          onDelete={onDeleteContact}
+          onEdit={onEditContact}
         />
       ))}
     </div>

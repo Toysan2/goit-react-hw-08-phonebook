@@ -11,7 +11,7 @@ function Navigation() {
   const handleLogout = async () => {
     if (token) {
       try {
-        await myAPI.logout(token);
+        await myAPI.logOut(token);
         dispatch(clearAuthToken());
         // Additional logic for post-logout (e.g., redirect to login page)
       } catch (error) {

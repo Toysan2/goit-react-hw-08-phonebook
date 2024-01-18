@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
@@ -8,40 +8,40 @@ function Contacts() {
   const [contacts, setContacts] = useState([]);
   const token = useSelector(state => state.auth.token);
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      if (token) {
-        const fetchedContacts = await myAPI.fetchContacts(token);
-        setContacts(fetchedContacts);
-      }
-    };
-    fetchContacts();
+  const fetchContacts = useCallback(async () => {
+    if (token) {
+      const fetchedContacts = await myAPI.fetchContacts(token);
+      setContacts(fetchedContacts);
+    }
   }, [token]);
 
-  const handleAddContact = async newContactData => {
-    if (token) {
-      const addedContact = await myAPI.addContact(newContactData, token);
-      if (addedContact) {
-        const updatedContacts = await myAPI.fetchContacts(token);
-        setContacts(updatedContacts);
-      }
-    }
+  useEffect(() => {
+    fetchContacts();
+  }, [fetchContacts]);
+
+  const handleAddContact = async contactData => {
+    await myAPI.addContact(token, contactData);
+    await fetchContacts();
   };
 
   const handleDeleteContact = async contactId => {
-    if (token) {
-      await myAPI.deleteContact(contactId, token);
-      console.log('Contact deleted, fetching updated list...');
-      const updatedContacts = await myAPI.fetchContacts(token);
-      console.log('Updated contacts:', updatedContacts);
-      setContacts(updatedContacts);
-    }
+    await myAPI.deleteContact(token, contactId);
+    await fetchContacts();
+  };
+
+  const handleEditContact = async (contactId, contactData) => {
+    await myAPI.updateContact(token, contactId, contactData);
+    await fetchContacts();
   };
 
   return (
     <div>
       <ContactForm onAddContact={handleAddContact} />
-      <ContactList contacts={contacts} onDeleteContact={handleDeleteContact} />
+      <ContactList
+        contacts={contacts}
+        onDeleteContact={handleDeleteContact}
+        onEditContact={handleEditContact}
+      />
     </div>
   );
 }

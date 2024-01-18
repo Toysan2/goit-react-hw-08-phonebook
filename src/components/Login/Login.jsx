@@ -16,7 +16,7 @@ function Login() {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      const response = await myAPI.login(credentials);
+      const response = await myAPI.logIn(credentials); // Corrected the function name to 'logIn'
       if (response.token) {
         dispatch(setAuthToken(response.token));
         navigate('/contacts');

@@ -1,29 +1,58 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import myAPI from '../myAPI/myAPI';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-function ContactItem({ contact, onDeleteContact }) {
-  const token = useSelector(state => state.auth.token);
+function ContactItem({ contact, onDelete, onEdit }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContact, setEditedContact] = useState({
+    name: contact.name,
+    number: contact.number,
+  });
 
-  const handleDelete = async () => {
-    if (token) {
-      try {
-        await myAPI.deleteContact(contact.id, token);
-        onDeleteContact(contact.id);
-      } catch (error) {
-        console.error('Error deleting contact:', error);
-      }
-    }
+  const handleEditChange = e => {
+    setEditedContact({ ...editedContact, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    onEdit(contact.id, editedContact);
+    setIsEditing(false);
   };
 
   return (
     <div>
-      <p>
-        {contact.name}: {contact.number}
-      </p>
-      <button onClick={handleDelete}>Delete</button>
+      {!isEditing ? (
+        <>
+          <h3>{contact.name}</h3>
+          <p>{contact.number}</p>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={() => onDelete(contact.id)}>Delete</button>
+        </>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            value={editedContact.name}
+            onChange={handleEditChange}
+          />
+          <input
+            type="tel"
+            name="number"
+            value={editedContact.number}
+            onChange={handleEditChange}
+          />
+          <button type="submit">Save</button>
+          <button onClick={() => setIsEditing(false)}>Cancel</button>
+        </form>
+      )}
     </div>
   );
 }
+
+ContactItem.propTypes = {
+  contact: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+};
 
 export default ContactItem;
