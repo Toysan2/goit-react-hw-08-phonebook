@@ -1,34 +1,45 @@
+
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearAuthToken } from '../../redux/actions'; // Update this path as per your project structure
-import myAPI from '../myAPI/myAPI';
+import { clearAuthToken } from '../../redux/actions';
 
 function Navigation() {
-  const token = useSelector(state => state.auth.token);
+  const location = useLocation();
   const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.token);
 
-  const handleLogout = async () => {
-    if (token) {
-      try {
-        await myAPI.logOut(token);
-        dispatch(clearAuthToken());
-        // Additional logic for post-logout (e.g., redirect to login page)
-      } catch (error) {
-        console.error('Error during logout:', error);
-        // Handle logout error
-      }
-    } else {
-      console.error('No token found for logout');
-    }
+  const handleLogout = () => {
+    dispatch(clearAuthToken());
   };
+
+  // Strip the basename from the current pathname
+  const currentPath = location.pathname.replace('/goit-react-hw-08-phonebook', '');
+
+  const hideHomeLink = currentPath === '/home' || currentPath === '/';
+  const hideLoginLink = currentPath === '/login';
+  const hideRegisterLink = currentPath === '/register';
+  const hideContactsLink = currentPath === '/contacts';
+
+  const navItemsNotLoggedIn = (
+    <ul>
+      {!hideHomeLink && <li><NavLink to="/home">Home</NavLink></li>}
+      {!hideLoginLink && <li><NavLink to="/login">Login</NavLink></li>}
+      {!hideRegisterLink && <li><NavLink to="/register">Register</NavLink></li>}
+    </ul>
+  );
+
+  const navItemsLoggedIn = (
+    <ul>
+      {!hideHomeLink && <li><NavLink to="/home">Home</NavLink></li>}
+      {!hideContactsLink && <li><NavLink to="/contacts">Contacts</NavLink></li>}
+      <li><button onClick={handleLogout}>Logout</button></li>
+    </ul>
+  );
 
   return (
     <nav>
-      <NavLink to="/login">Login</NavLink>
-      <NavLink to="/register">Register</NavLink>
-      <NavLink to="/contacts">Contacts</NavLink>
-      <button onClick={handleLogout}>Logout</button>
+      {!token ? navItemsNotLoggedIn : navItemsLoggedIn}
     </nav>
   );
 }
