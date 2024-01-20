@@ -10,7 +10,6 @@ const theme = extendTheme({
     heading: 'Arial, sans-serif',
     body: 'Verdana, sans-serif',
   },
-  // Additional theme customizations
 });
 
 export default theme;

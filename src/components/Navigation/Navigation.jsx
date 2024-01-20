@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearAuthToken } from '../../redux/actions';
 import { Flex, Button, Link, List, ListItem } from '@chakra-ui/react';
+import UserMenu from '../UserMenu/UserMenu';
 
 function Navigation() {
   const location = useLocation();
@@ -29,6 +30,9 @@ function Navigation() {
       {token ? (
         isContactsPage ? (
           <List styleType="none" display="flex" alignItems="center">
+            <ListItem mr={4}>
+              <UserMenu />
+            </ListItem>
             <ListItem mr={4}>
               <Button onClick={handleLogout}>Logout</Button>
             </ListItem>

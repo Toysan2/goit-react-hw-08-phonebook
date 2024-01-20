@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import myAPI from '../myAPI/myAPI';
-import { setAuthToken } from '../../redux/actions';
+import { setAuthToken, setUser } from '../../redux/actions'; // Ensure setUser action is imported
 import {
   FormControl,
   FormLabel,
@@ -30,6 +30,7 @@ function Login() {
       const response = await myAPI.logIn(credentials);
       if (response.token) {
         dispatch(setAuthToken(response.token));
+        dispatch(setUser({ email: credentials.email })); // Dispatch user's email
         navigate('/contacts');
       } else {
         setError('Sorry, bad or non-existent email or password');
