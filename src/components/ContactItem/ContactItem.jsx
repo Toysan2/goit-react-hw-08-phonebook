@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import {
+  Box,
+  Text,
+  Button,
+  Input,
+  Stack,
+  Heading,
+  FormControl,
+} from '@chakra-ui/react';
 
 function ContactItem({ contact, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -19,33 +28,53 @@ function ContactItem({ contact, onDelete, onEdit }) {
   };
 
   return (
-    <div>
+    <Box p={4} shadow="md" borderWidth="1px">
       {!isEditing ? (
         <>
-          <h3>{contact.name}</h3>
-          <p>{contact.number}</p>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => onDelete(contact.id)}>Delete</button>
+          <Heading size="md">{contact.name}</Heading>
+          <Text>{contact.number}</Text>
+          <Stack direction="row" spacing={4}>
+            <Button colorScheme="blue" onClick={() => setIsEditing(true)}>
+              Edit
+            </Button>
+            <Button colorScheme="red" onClick={() => onDelete(contact.id)}>
+              Delete
+            </Button>
+          </Stack>
         </>
       ) : (
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            value={editedContact.name}
-            onChange={handleEditChange}
-          />
-          <input
-            type="tel"
-            name="number"
-            value={editedContact.number}
-            onChange={handleEditChange}
-          />
-          <button type="submit">Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
+          <Stack spacing={3}>
+            <FormControl>
+              <Input
+                type="text"
+                name="name"
+                value={editedContact.name}
+                onChange={handleEditChange}
+                placeholder="Name"
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                type="tel"
+                name="number"
+                value={editedContact.number}
+                onChange={handleEditChange}
+                placeholder="Number"
+              />
+            </FormControl>
+            <Stack direction="row" spacing={4}>
+              <Button type="submit" colorScheme="green">
+                Save
+              </Button>
+              <Button onClick={() => setIsEditing(false)} colorScheme="yellow">
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
         </form>
       )}
-    </div>
+    </Box>
   );
 }
 

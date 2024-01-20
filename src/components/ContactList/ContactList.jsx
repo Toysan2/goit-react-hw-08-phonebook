@@ -1,9 +1,10 @@
 import React from 'react';
 import ContactItem from '../ContactItem/ContactItem';
+import { VStack } from '@chakra-ui/react';
 
 function ContactList({ contacts, onDeleteContact, onEditContact }) {
   return (
-    <div>
+    <VStack spacing={4} align="stretch">
       {contacts.map(contact => (
         <ContactItem
           key={contact.id}
@@ -12,7 +13,7 @@ function ContactList({ contacts, onDeleteContact, onEditContact }) {
           onEdit={onEditContact}
         />
       ))}
-    </div>
+    </VStack>
   );
 }
 

@@ -3,6 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import myAPI from '../myAPI/myAPI';
 import { setAuthToken } from '../../redux/actions'; // Update this path as per your project structure
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  VStack,
+  Box,
+} from '@chakra-ui/react';
 
 function Login() {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -30,21 +38,40 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="email"
-        type="email"
-        value={credentials.email}
-        onChange={handleChange}
-      />
-      <input
-        name="password"
-        type="password"
-        value={credentials.password}
-        onChange={handleChange}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <Box
+      as="form"
+      onSubmit={handleSubmit}
+      p={4}
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="lg"
+    >
+      <VStack spacing={4}>
+        <FormControl id="email">
+          <FormLabel>Email address</FormLabel>
+          <Input
+            name="email"
+            type="email"
+            value={credentials.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+          />
+        </FormControl>
+        <FormControl id="password">
+          <FormLabel>Password</FormLabel>
+          <Input
+            name="password"
+            type="password"
+            value={credentials.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+          />
+        </FormControl>
+        <Button type="submit" colorScheme="blue" width="full">
+          Login
+        </Button>
+      </VStack>
+    </Box>
   );
 }
 

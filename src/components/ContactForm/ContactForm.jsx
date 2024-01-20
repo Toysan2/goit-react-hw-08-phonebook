@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import {
+  Input,
+  Button,
+  FormControl,
+  FormLabel,
+  VStack,
+} from '@chakra-ui/react';
 
 function ContactForm({ onAddContact }) {
   const [contact, setContact] = useState({ name: '', number: '' });
@@ -17,21 +24,29 @@ function ContactForm({ onAddContact }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="name"
-        value={contact.name}
-        onChange={handleChange}
-        placeholder="Name"
-      />
-      <input
-        name="number"
-        value={contact.number}
-        onChange={handleChange}
-        placeholder="Number"
-      />
-      <button type="submit">Add Contact</button>
-    </form>
+    <VStack as="form" onSubmit={handleSubmit} spacing={4}>
+      <FormControl id="name">
+        <FormLabel>Name</FormLabel>
+        <Input
+          name="name"
+          value={contact.name}
+          onChange={handleChange}
+          placeholder="Name"
+        />
+      </FormControl>
+      <FormControl id="number">
+        <FormLabel>Number</FormLabel>
+        <Input
+          name="number"
+          value={contact.number}
+          onChange={handleChange}
+          placeholder="Number"
+        />
+      </FormControl>
+      <Button type="submit" colorScheme="primary">
+        Add Contact
+      </Button>
+    </VStack>
   );
 }
 

@@ -3,6 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setAuthToken } from '../../redux/actions';
 import myAPI from '../myAPI/myAPI';
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  VStack,
+  Box,
+} from '@chakra-ui/react';
 
 function Register() {
   const [userData, setUserData] = useState({
@@ -31,29 +39,49 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="name"
-        value={userData.name}
-        onChange={handleChange}
-        placeholder="Name"
-      />
-      <input
-        name="email"
-        type="email"
-        value={userData.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />
-      <input
-        name="password"
-        type="password"
-        value={userData.password}
-        onChange={handleChange}
-        placeholder="Password"
-      />
-      <button type="submit">Register</button>
-    </form>
+    <Box
+      as="form"
+      onSubmit={handleSubmit}
+      p={4}
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="lg"
+    >
+      <VStack spacing={4}>
+        <FormControl id="name">
+          <FormLabel>Name</FormLabel>
+          <Input
+            name="name"
+            value={userData.name}
+            onChange={handleChange}
+            placeholder="Enter your name"
+          />
+        </FormControl>
+        <FormControl id="email">
+          <FormLabel>Email address</FormLabel>
+          <Input
+            name="email"
+            type="email"
+            value={userData.email}
+            onChange={handleChange}
+            placeholder="Enter your email"
+          />
+        </FormControl>
+        <FormControl id="password">
+          <FormLabel>Password</FormLabel>
+          <Input
+            name="password"
+            type="password"
+            value={userData.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+          />
+        </FormControl>
+        <Button type="submit" colorScheme="blue" width="full">
+          Register
+        </Button>
+      </VStack>
+    </Box>
   );
 }
 
