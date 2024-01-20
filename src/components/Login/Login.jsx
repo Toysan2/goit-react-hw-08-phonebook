@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import myAPI from '../myAPI/myAPI';
-import { setAuthToken } from '../../redux/actions'; // Update this path as per your project structure
+import { setAuthToken } from '../../redux/actions';
 import {
   FormControl,
   FormLabel,
@@ -10,10 +10,12 @@ import {
   Button,
   VStack,
   Box,
+  Text,
 } from '@chakra-ui/react';
 
 function Login() {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,17 +25,18 @@ function Login() {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setError(''); // Reset error message
     try {
-      const response = await myAPI.logIn(credentials); // Corrected the function name to 'logIn'
+      const response = await myAPI.logIn(credentials);
       if (response.token) {
         dispatch(setAuthToken(response.token));
         navigate('/contacts');
       } else {
-        // Handle login failure (e.g., display an error message)
+        setError('Sorry, bad or non-existent email or password');
       }
     } catch (error) {
       console.error('Login error:', error);
-      // Handle error (e.g., display a notification)
+      setError('Sorry, bad or non-existent email or password');
     }
   };
 
@@ -47,6 +50,7 @@ function Login() {
       boxShadow="lg"
     >
       <VStack spacing={4}>
+        {error && <Text color="red.500">{error}</Text>}
         <FormControl id="email">
           <FormLabel>Email address</FormLabel>
           <Input

@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   VStack,
+  Box,
 } from '@chakra-ui/react';
 
 function ContactForm({ onAddContact }) {
@@ -24,29 +25,40 @@ function ContactForm({ onAddContact }) {
   };
 
   return (
-    <VStack as="form" onSubmit={handleSubmit} spacing={4}>
-      <FormControl id="name">
-        <FormLabel>Name</FormLabel>
-        <Input
-          name="name"
-          value={contact.name}
-          onChange={handleChange}
-          placeholder="Name"
-        />
-      </FormControl>
-      <FormControl id="number">
-        <FormLabel>Number</FormLabel>
-        <Input
-          name="number"
-          value={contact.number}
-          onChange={handleChange}
-          placeholder="Number"
-        />
-      </FormControl>
-      <Button type="submit" colorScheme="primary">
-        Add Contact
-      </Button>
-    </VStack>
+    <Box
+      as="form"
+      onSubmit={handleSubmit}
+      p={4}
+      mt=""
+      ml=""
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="lg"
+    >
+      <VStack spacing={4}>
+        <FormControl id="name">
+          <FormLabel>Name</FormLabel>
+          <Input
+            name="name"
+            value={contact.name}
+            onChange={handleChange}
+            placeholder="Name"
+          />
+        </FormControl>
+        <FormControl id="number">
+          <FormLabel>Number</FormLabel>
+          <Input
+            name="number"
+            value={contact.number}
+            onChange={handleChange}
+            placeholder="Number"
+          />
+        </FormControl>
+        <Button type="submit" colorScheme="blue" width="full">
+          Add Contact
+        </Button>
+      </VStack>
+    </Box>
   );
 }
 

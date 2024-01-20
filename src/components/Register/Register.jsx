@@ -10,6 +10,7 @@ import {
   Button,
   VStack,
   Box,
+  Text,
 } from '@chakra-ui/react';
 
 function Register() {
@@ -18,6 +19,7 @@ function Register() {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,14 +29,23 @@ function Register() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const response = await myAPI.register(userData);
-
-    if (response.token) {
-      dispatch(setAuthToken(response.token));
-      navigate('/contacts');
-    } else {
-      // Handle registration failure
-      console.error('Registration failed:', response);
+    setError(''); // Reset error message
+    if (userData.password.length < 7) {
+      setError('Sorry, your password is too short');
+      return;
+    }
+    try {
+      const response = await myAPI.register(userData);
+      if (response.token) {
+        dispatch(setAuthToken(response.token));
+        navigate('/contacts');
+      } else {
+        // Handle registration failure
+        console.error('Registration failed:', response);
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      // Handle other registration errors
     }
   };
 
@@ -48,6 +59,7 @@ function Register() {
       boxShadow="lg"
     >
       <VStack spacing={4}>
+        {error && <Text color="red.500">{error}</Text>}
         <FormControl id="name">
           <FormLabel>Name</FormLabel>
           <Input
