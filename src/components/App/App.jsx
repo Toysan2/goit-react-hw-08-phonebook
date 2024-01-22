@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuthToken, setUser } from '../../redux/actions';
 import { Box } from '@chakra-ui/react';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
@@ -10,6 +11,19 @@ import Home from '../Home/Home';
 
 function App() {
   const token = useSelector(state => state.auth.token);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const persistedToken = localStorage.getItem('authToken');
+    const persistedUserData = localStorage.getItem('userData');
+
+    if (persistedToken) {
+      dispatch(setAuthToken(persistedToken));
+    }
+    if (persistedUserData) {
+      dispatch(setUser(JSON.parse(persistedUserData)));
+    }
+  }, [dispatch]);
 
   return (
     <Box bg="gray.100" minH="100vh">

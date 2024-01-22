@@ -12,6 +12,8 @@ function Navigation() {
   const token = useSelector(state => state.auth.token);
 
   const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
     dispatch(clearAuthToken());
     navigate('/home');
   };

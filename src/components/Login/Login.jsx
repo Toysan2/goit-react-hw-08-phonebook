@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import myAPI from '../myAPI/myAPI';
-import { setAuthToken, setUser } from '../../redux/actions'; // Ensure setUser action is imported
+import { setAuthToken, setUser } from '../../redux/actions';
 import {
   FormControl,
   FormLabel,
@@ -25,12 +25,17 @@ function Login() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    setError(''); // Reset error message
+    setError('');
     try {
       const response = await myAPI.logIn(credentials);
       if (response.token) {
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem(
+          'userData',
+          JSON.stringify({ email: credentials.email })
+        );
         dispatch(setAuthToken(response.token));
-        dispatch(setUser({ email: credentials.email })); // Dispatch user's email
+        dispatch(setUser({ email: credentials.email }));
         navigate('/contacts');
       } else {
         setError('Sorry, bad or non-existent email or password');
@@ -72,8 +77,8 @@ function Login() {
             placeholder="Enter your password"
           />
         </FormControl>
-        <Button type="submit" colorScheme="blue" width="full">
-          Login
+        <Button type="submit" colorScheme="blue" width="100%">
+          Log In
         </Button>
       </VStack>
     </Box>
